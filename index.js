@@ -3,6 +3,8 @@ import cors from 'cors';
 import { errorMiddleware, notFoundHandler } from './middleware/error.midddleware.js';
 import { connectDB } from './db/mongoose.js';
 import movieRouter from './routes/movies.routes.js';
+import userRouter from './routes/users.routes.js';
+
 const app = express();
 
 
@@ -19,6 +21,8 @@ app.get("/", (req, res) => {
 })
 
 app.use('/movies', movieRouter);
+app.use('/user', userRouter);
+
 
 app.use(notFoundHandler);
 app.use(errorMiddleware);
