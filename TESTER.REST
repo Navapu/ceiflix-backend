@@ -1,5 +1,5 @@
 @domain = http://localhost:3001
-# @token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODUxYzI0OGY3MDY0YjIzODE2ZjU0NjIiLCJuYW1lIjoidXNlcjMiLCJpYXQiOjE3NTAxODg2MTcsImV4cCI6MTc1MDE5NTgxN30.HFP5zQ4yqjWOoNhvk31jUblTB-9GVWug1C-JSdIbrww
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVhZjk4MDFhOTc5OGYxNjU2MzY1OTciLCJ1c2VybmFtZSI6IkFsZWphbmRybyIsImlhdCI6MTc1MDc5MjgwMCwiZXhwIjoxNzUwODAwMDAwfQ.rDJVS044VuCWy7JpuhpNL9O4r7ZjzxTJr4GvmEPffYA
 POST {{domain}}/user/register
 Content-Type: application/json
 
@@ -18,5 +18,5 @@ Content-Type: application/json
     "password": "123456"
 }
 ###
-# GET  {{domain}}/auth/me
-# Authorization: Bearer {{token}}
+GET  {{domain}}/user/me
+Authorization: Bearer {{token}}
