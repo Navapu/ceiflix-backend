@@ -1,4 +1,5 @@
 import { TOKEN_API_TMDB } from '../config/config.js'
+import { Movie, User } from '../db/models/index.js';
 const ResponseAPI = {
     msg: "",
     data: [],
@@ -31,4 +32,38 @@ export const getMovies = async (req, res) => {
         next(error)
     }
 
+}
+export const watchedMovie = async (req, res) => {
+    try{
+        const userId = req.userId;
+        const {title, poster, value} = req.body;
+        const existingMovie = await Movie.findOne({ title });
+
+        if(existingMovie){
+            const currentUser = await User.findByIdAndUpdate(
+                userId,
+                { $push: { movies: existingMovie._id } },
+                { new: true }
+              );
+              ResponseAPI.msg = `${title} has been aded to watched`;
+              ResponseAPI.data = currentUser;
+              return res.status(200).json(ResponseAPI);
+        }
+        const movie = await Movie.create({
+            title,
+            poster,
+            value
+        })
+
+        const currentUser = await User.findByIdAndUpdate(
+            userId,
+            { $push: { movies: movie._id } },
+            { new: true }
+          );
+          ResponseAPI.msg = `${title} has been aded to watched`;
+          ResponseAPI.data = currentUser;
+          return res.status(200).json(ResponseAPI);
+    }catch(error){
+        next(error)
+    }
 }
