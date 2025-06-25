@@ -44,7 +44,14 @@ export const watchedMovie = async (req, res, next) => {
         const userId = req.userId;
         const { title, poster, value, apimovieid } = req.body;
 
-        const currentUser = await User.findById(userId);
+        const currentUser = await User.findById(userId).select('-password');
+
+        if(!currentUser){
+            ResponseAPI.msg = 'User not found';
+            ResponseAPI.data = []
+            ResponseAPI.status = 'error';
+            return res.status(401).json(ResponseAPI);
+        }
 
         const alreadyWatched = currentUser.movies.some(
             (movie) => movie.apimovieid === apimovieid
@@ -67,6 +74,26 @@ export const watchedMovie = async (req, res, next) => {
         next(error);
     }
 };
+export const getWatchedMovies = async (req, res, next) => {
+    try{
+        const userId = req.userId;
+        const currentUser = await User.findById(userId).select('-password');
+
+        if(!currentUser){
+            ResponseAPI.msg = 'User not found';
+            ResponseAPI.data = []
+            ResponseAPI.status = 'error';
+            return res.status(401).json(ResponseAPI);
+        }
+        ResponseAPI.msg = `All the movies you've seen`;
+        ResponseAPI.data = currentUser.movies;
+        ResponseAPI.status = 'ok';
+        return res.status(200).json(ResponseAPI)
+
+    }catch(error){
+        next(error)
+    }
+}
 export const getMovieById = async (req, res, next) => {
     try {
         const { id } = req.params;
