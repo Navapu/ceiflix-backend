@@ -5,9 +5,10 @@ const ResponseAPI = {
     data: [],
     status: 'ok'
 }
-export const getMovies = async (req, res, next) => {
+export const getMoviesNowPlaying = async (req, res, next) => {
     try {
-        const url = 'https://api.themoviedb.org/3/movie/now_playing?language=es&page=1';
+        const page = req.query.page || 1;
+        const url = `https://api.themoviedb.org/3/movie/now_playing?&page=${page}`;
         const options = {
             method: 'GET',
             headers: {
@@ -31,7 +32,6 @@ export const getMovies = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
-
 }
 export const watchedMovie = async (req, res, next) => {
     const ResponseAPI = {

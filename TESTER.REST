@@ -34,3 +34,6 @@ Content-Type: application/json
 ###
 GET  {{domain}}/movies/me
 Authorization: Bearer {{token}}
+
+###
+GET {{domain}}/movies?page=2
