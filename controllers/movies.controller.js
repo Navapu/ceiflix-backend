@@ -1,5 +1,5 @@
 import { TOKEN_API_TMDB } from '../config/config.js'
-import { Movie, User } from '../db/models/index.js';
+import { User } from '../db/models/index.js';
 const ResponseAPI = {
     msg: "",
     data: [],
@@ -34,42 +34,42 @@ export const getMovies = async (req, res, next) => {
 
 }
 export const watchedMovie = async (req, res, next) => {
-    try{
+    const ResponseAPI = {
+        msg: "",
+        data: [],
+        status: "ok"
+    };
+
+    try {
         const userId = req.userId;
-        const {title, poster, value} = req.body;
-        const existingMovie = await Movie.findOne({ title });
+        const { title, poster, value, apimovieid } = req.body;
 
-        if(existingMovie){
-            const currentUser = await User.findByIdAndUpdate(
-                userId,
-                { $push: { movies: existingMovie._id } },
-                { new: true }
-              );
-              ResponseAPI.msg = `${title} has been aded to watched`;
-              ResponseAPI.data = currentUser;
-              return res.status(200).json(ResponseAPI);
+        const currentUser = await User.findById(userId);
+
+        const alreadyWatched = currentUser.movies.some(
+            (movie) => movie.apimovieid === apimovieid
+        );
+
+        if (alreadyWatched) {
+            ResponseAPI.msg = `${title} is already marked as watched`;
+            ResponseAPI.data = currentUser;
+            return res.status(200).json(ResponseAPI);
         }
-        const movie = await Movie.create({
-            title,
-            poster,
-            value
-        })
 
-        const currentUser = await User.findByIdAndUpdate(
-            userId,
-            { $push: { movies: movie._id } },
-            { new: true }
-          );
-          ResponseAPI.msg = `${title} has been aded to watched`;
-          ResponseAPI.data = currentUser;
-          return res.status(200).json(ResponseAPI);
-    }catch(error){
-        next(error)
+        currentUser.movies.push({ title, poster, value, apimovieid });
+        await currentUser.save();
+
+        ResponseAPI.msg = `${title} has been added to watched`;
+        ResponseAPI.data = currentUser;
+        return res.status(200).json(ResponseAPI);
+
+    } catch (error) {
+        next(error);
     }
-}
+};
 export const getMovieById = async (req, res, next) => {
-    try{
-        const {id} = req.params;
+    try {
+        const { id } = req.params;
         const url = `https://api.themoviedb.org/3/movie/${id}?language=en-US`;
         const options = {
             method: 'GET',
@@ -92,7 +92,7 @@ export const getMovieById = async (req, res, next) => {
         ResponseAPI.data = responseJSON;
         return res.status(200).json(ResponseAPI);
 
-    }catch(error){
+    } catch (error) {
         next(error)
     }
 

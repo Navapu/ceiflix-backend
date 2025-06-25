@@ -23,7 +23,14 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     profileimg: String,
-    movies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
+    movies: [
+        {
+          title: String,
+          poster: String,
+          value: Number,
+          apimovieid: Number
+        }
+      ]
 }, options);
 
 export const User = mongoose.model('User', userSchema);

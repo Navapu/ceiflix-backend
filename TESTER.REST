@@ -1,5 +1,5 @@
 @domain = http://localhost:3001
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVhZjk4MDFhOTc5OGYxNjU2MzY1OTciLCJ1c2VybmFtZSI6IkFsZWphbmRybyIsImlhdCI6MTc1MDc5MjgwMCwiZXhwIjoxNzUwODAwMDAwfQ.rDJVS044VuCWy7JpuhpNL9O4r7ZjzxTJr4GvmEPffYA
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVjNGIwYzViZjZhMDNmMmM3ODVkODkiLCJ1c2VybmFtZSI6IkFsZWphbmRybyIsImlhdCI6MTc1MDg3ODk4OCwiZXhwIjoxNzUwODg2MTg4fQ.LJ0GvPTjIZKaf5k1pc39XVqDpPm-u7ZtMjEEcfKiJzU
 POST {{domain}}/user/register
 Content-Type: application/json
 
@@ -20,3 +20,14 @@ Content-Type: application/json
 ###
 GET  {{domain}}/user/me
 Authorization: Bearer {{token}}
+###
+POST  {{domain}}/movies
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "title": "Final Destination Bloodlines",
+    "poster": "uIpJPDNFoeX0TVml9smPrs9KUVx.jpg",
+    "value": 0,
+    "apimovieid": 574475
+}
